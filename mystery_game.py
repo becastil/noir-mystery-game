@@ -48,6 +48,10 @@ rooms = {
 # Set the player's starting location
 current_room = "Grand Foyer"
 
+# Initialize the detective's inventory
+inventory = []
+
+
 # Function to describe the current room
 def enter_room(room_name):
     room = rooms[room_name]
@@ -79,6 +83,23 @@ while True:
     elif command in ["quit", "exit"]:
         print("You tip your hat, turn from the shadows, and step into the rain. Case closed.")
         break
+
+    elif command.startswith("take "):
+        item = command[5:] # Get the item name after "take "
+        current = rooms[current_room]
+        if item in current.contents:
+            inventory.append(item)
+            current.contents.remove(item)
+            print(f"You slip the {item} into your coat pocket.")
+        else: 
+            print(f"No sign of {item}' in this room.")
+
+    elif command == "inventory":
+        if inventory:
+            print("Clues in your pocket:", ", ".join(inventory))
+        else:
+            print("Your pockets are empty. For now.")
+
 
     else:
         print("That doesn't make sense in this twisted place...")
